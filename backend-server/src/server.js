@@ -1,7 +1,9 @@
 const Path = require('path');
 const Inert = require('inert');
 const Cors = require('hapi-cors');
-var colors = require('colors');
+const colors = require('colors');
+const Hoek = require('hoek');
+
 
 process.on('unhandledRejection', (err, promise) => {
   console.error(`Uncaught error in`, promise);
@@ -25,7 +27,7 @@ module.exports = function (config) {
       connections: {
         routes: {
           files: {
-            relativeTo: uploadsFolder
+            relativeTo: Path.join(__dirname, '../../build/public')
           }
         }
       }
@@ -34,6 +36,31 @@ module.exports = function (config) {
     server.register(Inert, (err) => {
       if (err) throw err;
     });
+
+    server.register(require('vision'), (err) => {
+      Hoek.assert(!err, err);
+      server.views({
+        engines: {
+          html: require('handlebars')
+        },
+        relativeTo: __dirname,
+        path: '../../build/public'
+      });
+    });
+
+    server.route({
+      method: 'GET',
+      path: '/{param*}',
+      handler: {
+        directory: {
+          path: '.',
+          redirectToSlash: true,
+          index: true
+        }
+      }
+    });
+
+
     server.decorate('request', 'db', models);
     server.register([
       {
@@ -45,6 +72,17 @@ module.exports = function (config) {
       },
     ], () => {
       server.route(debugRoutes(require('./lib/crudRoutes/blog')));
+
+      server.route([
+        {
+          method: 'GET',
+          path: '/',
+          handler: (request, reply) => {
+            reply.view('index');
+          }
+        }
+      ]);
+
       server.start((err) => {
         if (err)
           throw err;

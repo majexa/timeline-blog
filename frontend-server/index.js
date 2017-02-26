@@ -27,7 +27,7 @@ dbConnect().then((models) => {
         html: require('handlebars')
       },
       relativeTo: __dirname,
-      path: '../build/public'
+      path: '../frontend/public'
     });
   });
   server.route({
