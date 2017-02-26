@@ -3,7 +3,7 @@ const Inert = require('inert');
 const Cors = require('hapi-cors');
 const colors = require('colors');
 const Hoek = require('hoek');
-
+require('dotenv').config();
 
 process.on('unhandledRejection', (err, promise) => {
   console.error(`Uncaught error in`, promise);
@@ -78,7 +78,9 @@ module.exports = function (config) {
           method: 'GET',
           path: '/',
           handler: (request, reply) => {
-            reply.view('index');
+            reply.view('index', {
+              serverUrl: process.env.serverUrl
+            });
           }
         }
       ]);
