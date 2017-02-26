@@ -1,0 +1,31 @@
+<html>
+<head>
+    <title>WISIWIG</title>
+    <link rel="stylesheet" type="text/css" href="m/css/main.css">
+    <script src="m/js/main.js"></script>
+    <script src="m/js/formTmpl/blog.js"></script>
+</head>
+<body>
+<h1>WISIWIG</h1>
+
+<div id="table"></div>
+
+<script>
+  var serverUrl = 'http://localhost:8060';
+  var grid = new Ngn.CrudGrid({
+    basePath: serverUrl,
+    modelName: 'blog',
+    formatters: {
+      dt: function (v) {
+        return Date.parse(v).format('%d %B <small>(%A)</small> %H:%M:%S');
+      }
+    },
+    crudDialogOptions: {
+      formTmpl: Ngn.formTmpl.blog,
+      width: 550
+      //url: serverUrl + '/api/v1/' + 'blog'
+    }
+  });
+  grid.reload();
+</script>
+</body>

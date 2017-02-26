@@ -1,0 +1,37 @@
+[
+  {
+    "title": "Дата",
+    "type": "date",
+    "name": "dt",
+    "required": true,
+    "system": true,
+    "_default": "Date.now"
+  },
+  {
+    "title": "Title",
+    "name": "title",
+    "required": true,
+    "type": "text"
+  },
+  {
+    "title": "Post type",
+    "name": "postType",
+    "type": "select",
+    "options": {
+      "location": "location",
+      "movie": "movie",
+      "picture": "picture"
+    }
+  },
+  {
+    "title": "dasdqw",
+    "name": "zsfsadf",
+    "required": true,
+    "type": "text"
+  },
+  {
+    "title": "Text",
+    "name": "text",
+    "type": "textarea"
+  }
+]
